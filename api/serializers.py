@@ -20,13 +20,14 @@ class UserSerializer(ModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        password = validated_data.get('password')
-        if password:
-            hashed_password = make_password(password)
-            validated_data['password'] = hashed_password
-        return super().update(instance, validated_data)
-    
-    
+        # Your custom update logic here
+        print("--------update-----------")
+        instance.id = validated_data.get('userId', instance.id)
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        # Update other fields as needed
+        instance.save()
+        return instance
 class myTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

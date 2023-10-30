@@ -6,6 +6,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -24,3 +25,15 @@ class UserDetails(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'id'
+    print("-------- view ----------")
+    def get_object(self):
+        user_id = self.kwargs.get('id')
+        user = get_object_or_404(User, id=user_id)
+        print("---------", user)
+        return user
+
+    def perform_update(self, serializer):
+        # Your custom update logic in the serializer
+        serializer.save()
+
+
